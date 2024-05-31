@@ -13,7 +13,8 @@ class CourseController extends Controller
      */
     public function index()
     {
-        //
+        $courses = Course::with('activity', 'slot', 'users')->get(); 
+        return $courses;
     }
 
     /**
@@ -35,9 +36,17 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Course $course)
+    public function show($id)
     {
-        //
+        $course = Course::with('activity', 'slot')->find($id);
+        if (!$course) {
+            return response(['message' => 'Not found'], 404);
+        }
+        // return view('faculties.show', ['course' => $course]);
+        return [
+            'success' => true,
+            'data' => $course
+        ];
     }
 
     /**
