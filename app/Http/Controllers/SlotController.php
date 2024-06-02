@@ -13,7 +13,8 @@ class SlotController extends Controller
      */
     public function index()
     {
-        //
+        $slots = Slot::with('courses', 'courses.activity')->get();
+        return $slots;
     }
 
     /**
@@ -35,9 +36,13 @@ class SlotController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Slot $slot)
+    public function show($id)
     {
-        //
+        $slot = Slot::with('activity', 'courses')->find($id);
+        if (!$slot) {
+            return response(['status' => 'Not found'], 404); // torna sempre status 200
+        }
+        return ['data' => $slot];
     }
 
     /**

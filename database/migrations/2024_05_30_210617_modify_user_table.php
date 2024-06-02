@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('username');
             $table->string('role');
             $table->string('profile_img')->nullable();
+            $table->string('profile_img')->nullable();
+            $table->tinyInteger('course_id')->constrained();
         });
     }
 

@@ -2,9 +2,11 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Slot;
+use App\Models\Course;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -27,6 +29,11 @@ class UserFactory extends Factory
         $randomNumber = fake()->numberBetween(1, 500);
         $randomImage = 'https://source.unsplash.com/random/500x500?sig=' . $randomNumber;
 
+
+        $course_ids = Course::all()->pluck('id')->all();
+        $course_ids[] = null;
+        $course_id = fake()->randomElement($course_ids);
+
         return [
             'name' => fake()->name(),
             'surname' => fake()->name(),
@@ -35,8 +42,9 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
-            'role' => fake()->randomElement(['admin', 'user']),
+            'role' => $course_id ? 'user' : 'admin',
             'profile_img' => $randomImage,
+            'course_id' => $course_ids,
         ];
     }
 

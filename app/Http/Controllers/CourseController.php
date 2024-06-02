@@ -13,7 +13,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::with('activity', 'slot', 'users')->get(); 
+        $courses = Course::with('activity', 'slot')->get(); 
         return $courses;
     }
 
@@ -44,7 +44,6 @@ class CourseController extends Controller
         }
         // return view('faculties.show', ['course' => $course]);
         return [
-            'success' => true,
             'data' => $course
         ];
     }

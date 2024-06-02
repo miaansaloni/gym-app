@@ -13,7 +13,8 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        //
+        $activities = Activity::with('courses', 'courses.slot')->get();
+        return $activities;
     }
 
     /**
@@ -35,9 +36,13 @@ class ActivityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Activity $activity)
+    public function show($id)
     {
-        //
+        $activity = Activity::with('courses', 'courses.slot')->find($id);
+        if (!$activity) {
+            return response(['message' => 'Not found'], 404); 
+        }
+        return ['data' => $activity];
     }
 
     /**
