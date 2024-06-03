@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Course;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 
@@ -21,9 +23,25 @@ class CourseController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        if(Auth::user()->role !== "admin") abort(404);
+        $request->validate([
+            'location' => 'required|string',
+            'year' => 'required|string',
+            'activity_id' => 'required|exists:activities,id',
+            'slot_id' => 'required|exists:slots,id',
+        ]);
+
+        // Creazione del nuovo corso
+        $course = new Course();
+        $course->location = $request->input('location');
+        $course->year = $request->input('year');
+        $course->activity_id = $request->input('activity_id');
+        $course->slot_id = $request->input('slot_id');
+        $course->save();
+
+        return response()->json(['message' => 'Course created successfully'], 201);
     }
 
     /**
@@ -49,9 +67,25 @@ class CourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Course $course)
+    public function edit(Request $request, $id)
     {
-        //
+        if(Auth::user()->role !== "admin") abort(404);
+        $request->validate([
+            'location' => 'required|string',
+            'year' => 'required|string',
+            'activity_id' => 'required|exists:activities,id',
+            'slot_id' => 'required|exists:slots,id',
+        ]);
+
+        // Modifica del corso
+        $course = new Course();
+        $course->location = $request->input('location');
+        $course->year = $request->input('year');
+        $course->activity_id = $request->input('activity_id');
+        $course->slot_id = $request->input('slot_id');
+        $course->update();
+
+        return response()->json(['message' => 'Course edited successfully'], 201);
     }
 
     /**

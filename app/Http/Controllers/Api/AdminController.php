@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
+use App\Models\Activity;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -67,5 +69,22 @@ class AdminController extends Controller
         $courses = $user->courses;
 
         return $courses;
+    }
+
+    public function createActivity(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'image' => 'nullable|string',
+        ]);
+        $activity = new Activity();
+        $activity->name = $request->name;
+        $activity->description = $request->description;
+        $activity->image = $request->image;
+        $activity->timestamps = false;
+        $activity->save();
+
+        return response()->json(['message' => 'Activity created successfully'], 201);
     }
 }
