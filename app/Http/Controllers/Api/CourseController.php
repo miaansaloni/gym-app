@@ -41,7 +41,7 @@ class CourseController extends Controller
     {
         $course = Course::with('activity', 'slot')->find($id);
         if (!$course) {
-            return response(['status' => 'Not found'], 404);
+            return response(['status' => 'Not found'], 404); // torna sempre status 200
         }
         return ['data' => $course];
     }

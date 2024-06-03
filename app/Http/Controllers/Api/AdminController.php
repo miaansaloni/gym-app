@@ -56,7 +56,7 @@ class AdminController extends Controller
         if (!$user) {
             return response()->json(['error' => 'User not found.'], 404);
         }
-        $newStatus = 'false';
+        $newStatus = 'rejected';
         $pivot = $user->courses()->where('course_id', $course_id)->first()->pivot;
 
         if (!$pivot) {

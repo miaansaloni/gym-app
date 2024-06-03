@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         // nome tabella creata per forza in odine alfabetico e al singolare (si crea tutto più in fretta e laravel da una mano)
         Schema::create('course_user', function (Blueprint $table) {
-            $table->foreignId('course_id')->nullable()->constrained();
-            $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('course_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->string('status', 10)->nullable();
         });
     }

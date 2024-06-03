@@ -18,17 +18,17 @@ class CourseFactory extends Factory
      */
     public function definition(): array
     {
-        $activity_ids = Activity::all()->pluck('id')->all();
-        $slot_ids = Slot::all()->pluck('id')->all();
+        // $activity_ids = Activity::all()->pluck('id')->all();
+        // $slot_ids = Slot::all()->pluck('id')->all();
 
-        $locationaRandName = fake()->randomDigit();
-        $locationRand = 'Aula ' . $locationaRandName;
+        // $locationaRandName = fake()->randomDigit();
+        // $locationRand = 'Aula ' . $locationaRandName;
 
         return [
-            'location' => $locationRand,
-            'year' => fake()->year(),
-            'activity_id' => fake()->randomElement($activity_ids),
-            'slot_id' => fake()->randomElement($slot_ids),
+        //     'location' => $locationRand,
+        //     'year' => fake()->year(),
+        //     'activity_id' => fake()->randomElement($activity_ids),
+        //     'slot_id' => fake()->randomElement($slot_ids),
         ];
     }
 }

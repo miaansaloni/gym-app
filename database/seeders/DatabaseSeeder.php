@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,7 +13,33 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // seeder da eseguire nell'ordine di creazione GIUSTO
-        $this->call([ActivitySeeder::class, SlotSeeder::class, CourseSeeder::class, UserSeeder::class]);
+
+        $randomNumber = fake()->numberBetween(1, 500);
+        $profileImageUrl = 'https://source.unsplash.com/random/500x500?sig=' . $randomNumber;
+
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'user@example.com',
+            'profile_image' => $profileImageUrl,
+            'role' => 'user',
+            'genre' => 'male',
+            'telephone' => '123 456789',
+            'course' => null,
+        ]);
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'profile_image' => $profileImageUrl,
+            'role' => 'admin',
+            'genre' => 'famale',
+            'telephone' => '123 456789',
+            'course' => null,
+        ]);
+
+        $this->call([
+            ActivitySeeder::class, 
+            SlotSeeder::class, 
+            CourseSeeder::class, 
+        ]);
     }
 }
