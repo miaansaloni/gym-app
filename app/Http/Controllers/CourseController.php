@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Course;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 
@@ -13,7 +14,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::with('activity', 'slot')->get(); 
+        $courses = Course::with('activity', 'slot')->get();
         return $courses;
     }
 
@@ -40,12 +41,9 @@ class CourseController extends Controller
     {
         $course = Course::with('activity', 'slot')->find($id);
         if (!$course) {
-            return response(['message' => 'Not found'], 404);
+            return response(['status' => 'Not found'], 404);
         }
-        // return view('faculties.show', ['course' => $course]);
-        return [
-            'data' => $course
-        ];
+        return ['data' => $course];
     }
 
     /**

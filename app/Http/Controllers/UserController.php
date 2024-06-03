@@ -1,49 +1,58 @@
 <?php
-
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\User;
-use App\Models\Course;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StoreCourseRequest;
-use App\Http\Requests\UpdateCourseRequest;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $users = User::all(); 
-        return $users;
-    }
-
-
-    public function userdashboard()
+    public function userDashboard()
     {
         if (Auth::user()->role !== 'user') {
             abort(401);
         }
-        // $user_id = Auth::user()->id;
-        $user_id = 1;
 
-        $bookedCourses = User::with('courses')->find($user_id);
-        return $bookedCourses;
+        $user_id = Auth::user()->id;
+        // $user_id = 1;
+
+        $inscription_courses = User::with('courses')->find($user_id);
+
+        return $inscription_courses;
     }
 
-    public function admindashboard()
+    public function bookCourse($id)
     {
-        if (Auth::user()->role !== 'admin') {
+        if (Auth::user()->role !== 'user') {
             abort(401);
         }
+        // $user_id = User::find(1);
+        // $course_id = 2;
+        $user = Auth::user();
+        $course_id = $id; // ID del corso che vuoi aggiornare
+        $newStatus = 'pending';
+        $pivot = $user->courses()->where('course_id', $course_id)->first()->pivot;
+        $pivot->status = $newStatus;
+        $pivot->save();
 
-        $courses = User::whereHas('courses', function ($query) {
-            $query->whereIn('course_user.status', ['pending', 'true']);
-        })->get();
-
-        return $courses;
+        return $pivot;
     }
 
-    
+    public function cancelBooking($id)
+    {
+        if (Auth::user()->role !== 'user') {
+            abort(401);
+        }
+        // $user_id = User::find(1);
+        // $course_id = 2;
+        $user = Auth::user();
+        $course_id = $id; // ID del corso che vuoi aggiornare
+        $newStatus = 'false';
+        $pivot = $user->courses()->where('course_id', $course_id)->first()->pivot;
+        $pivot->status = $newStatus;
+        $pivot->save();
+
+        return $pivot;
+    }
 }

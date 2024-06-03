@@ -16,14 +16,16 @@ class ActivityFactory extends Factory
      */
     public function definition(): array
     {
-
+        // Generazione di un numero casuale per l'immagine
+        // $randomNumber = $this->faker->numberBetween(1, 500);
         $randomNumber = fake()->numberBetween(1, 500);
-        $randomImage = 'https://source.unsplash.com/random/500x500?sig=' . $randomNumber;
+        // URL dell'immagine con numero casuale
+        $imageUrl = 'https://source.unsplash.com/random/500x500?sig=' . $randomNumber;
 
         return [
+            'image' => $imageUrl,
             'name' => fake()->sentence(3),
-            'description' => fake()->words(rand(4, 10), true),
-            'img' => $randomImage,
+            'description' => fake()->paragraph(),
         ];
     }
 }

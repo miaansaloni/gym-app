@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Slot;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSlotRequest;
 use App\Http\Requests\UpdateSlotRequest;
 
@@ -40,7 +41,7 @@ class SlotController extends Controller
     {
         $slot = Slot::with('activity', 'courses')->find($id);
         if (!$slot) {
-            return response(['status' => 'Not found'], 404); // torna sempre status 200
+            return response(['status' => 'Not found'], 404);
         }
         return ['data' => $slot];
     }

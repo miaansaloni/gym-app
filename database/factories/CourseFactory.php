@@ -21,14 +21,14 @@ class CourseFactory extends Factory
         $activity_ids = Activity::all()->pluck('id')->all();
         $slot_ids = Slot::all()->pluck('id')->all();
 
-        $randNum = fake()->randomDigit();
-        $randLocation = 'Room ' . $randNum;
+        $locationaRandName = fake()->randomDigit();
+        $locationRand = 'Aula ' . $locationaRandName;
 
         return [
+            'location' => $locationRand,
+            'year' => fake()->year(),
             'activity_id' => fake()->randomElement($activity_ids),
             'slot_id' => fake()->randomElement($slot_ids),
-            'location' => $randLocation,
-            // 'location' => fake()->randomElement('Cardio Room', 'Weight Room', 'Spin/Cycling Room', 'Yoga/Pilates Studio', 'Boxing/Martial Arts Room'),
         ];
     }
 }

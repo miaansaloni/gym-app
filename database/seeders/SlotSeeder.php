@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Slot;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class SlotSeeder extends Seeder
 {
@@ -13,6 +13,6 @@ class SlotSeeder extends Seeder
      */
     public function run(): void
     {
-        Slot::factory(10)->create();
+        Slot::factory(16)->create();
     }
 }

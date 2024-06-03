@@ -13,13 +13,6 @@ class ActivitySeeder extends Seeder
      */
     public function run(): void
     {
-        // Activity::factory()->create([
-        //     'name' => 'Pilates',
-        //     'description' => fake()->words(rand(4, 100), true),
-        //     'img' => 'https://www.futurapilates.it/wp-content/uploads/2022/05/photo-output_1-2.jpg',
-        // ]);
-
-        Activity::factory(10)->create();
+        Activity::factory(6)->create();
     }
 }
-

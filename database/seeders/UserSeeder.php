@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Slot;
 use App\Models\User;
 use App\Models\Course;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UserSeeder extends Seeder
@@ -16,43 +14,45 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // $degree_ids = Degree::all()->pluck('id')->all();
-        // $degree_ids[] = null;
         $randomNumber = fake()->numberBetween(1, 500);
         // URL dell'immagine con numero casuale
-        $randomImage = 'https://source.unsplash.com/random/500x500?sig=' . $randomNumber;
-
-
-        User::factory()->create([
-            'name' => 'Admin',
-            'surname' => 'Example',
-            'username' => 'adminuser',
-            'email' => 'admin@example.com',
-            'role' => 'admin',
-            'password' => Hash::make('adminpassword'),
-            'profile_img' => $randomImage,
-            'course_id' => null,
-
-        ]);
+        $profileImageUrl = 'https://source.unsplash.com/random/500x500?sig=' . $randomNumber;
 
         User::factory()->create([
-            'name' => 'User',
-            'surname' => 'Example',
-            'username' => 'normaluser',
-            'email' => 'user@example.com',
+            'name' => 'Ciuchino',
+            'email' => 'ciuchino@example.com',
+            'profile_image' => $profileImageUrl,
             'role' => 'user',
-            'password' => Hash::make('userpassword'),
-            'profile_img' => $randomImage,
-            'course_id' => 2,
+            'genre' => 'male',
+            'telephone' => fake()->phoneNumber(),
+            'course' => null,
+        ]);
+        User::factory()->create([
+            'name' => 'Shrek',
+            'email' => 'shrek@example.com',
+            'profile_image' => null,
+            'role' => 'admin',
+            'genre' => 'famale',
+            'telephone' => fake()->phoneNumber(),
+            'course' => null,
         ]);
 
-        User::factory(10)->create();
-        $course_ids = Course::all()->pluck('id')->all();
+        User::factory(15)->create();
 
-        $users = User::all()->all();
+        // per popolare la tabella ponte:
+
+        // metodo 1)
+
+        $users = User::all()->all(); //selezioniamo gli user e li inseriamo in un array
+        $course_ids = Course::all()->pluck('id')->all(); // siccome il metodo pluck ritorna una collezione, col metodo all viene trasformata in array normale
+
         foreach ($users as $user) {
-            if ($user->role ==='user') {
-                $user->courses()->attach(['status' => fake()->randomElement(['true', 'false'])]);
+            if ($user->role === 'user') {
+                if ($user->course) {
+                    $user->courses()->attach(fake()->randomElement($course_ids), ['status' => 'true']);
+                } else {
+                    $user->courses()->attach(null, ['status' => 'false']);
+                }
             }
         }
     }

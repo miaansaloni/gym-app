@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Slot;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,8 +19,8 @@ class SlotFactory extends Factory
     {
         return [
             'day' => fake()->dayOfWeek(),
-            'start' => fake()->time('H:i'),
-            'end' => fake()->time('H:i'),
+            'start_hour' => fake()->time('H:i'),
+            'end_hour' => fake()->time('H:i'),
         ];
     }
 }

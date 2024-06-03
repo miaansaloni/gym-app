@@ -18,19 +18,11 @@ class ActivityController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreActivityRequest $request)
     {
-        //
+        // Your code for storing a new activity
     }
 
     /**
@@ -40,17 +32,9 @@ class ActivityController extends Controller
     {
         $activity = Activity::with('courses', 'courses.slot')->find($id);
         if (!$activity) {
-            return response(['message' => 'Not found'], 404); 
+            return response(['message' => 'Not found'], 404);
         }
         return ['data' => $activity];
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Activity $activity)
-    {
-        //
     }
 
     /**
@@ -58,7 +42,7 @@ class ActivityController extends Controller
      */
     public function update(UpdateActivityRequest $request, Activity $activity)
     {
-        //
+        // Your code for updating an existing activity
     }
 
     /**
@@ -66,6 +50,6 @@ class ActivityController extends Controller
      */
     public function destroy(Activity $activity)
     {
-        //
+        // Your code for deleting an activity
     }
 }

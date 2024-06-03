@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Slot;
 use App\Models\Course;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -25,26 +24,25 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $course_ids = Course::all()->pluck('id')->all();
+        // significa che all'array preso precedentemente aggiungiamo un nuovo valore
+        $course_id = fake()->randomElement($course_ids);
+        $course_ids[] = null;
 
         $randomNumber = fake()->numberBetween(1, 500);
-        $randomImage = 'https://source.unsplash.com/random/500x500?sig=' . $randomNumber;
-
-
-        $course_ids = Course::all()->pluck('id')->all();
-        $course_ids[] = null;
-        $course_id = fake()->randomElement($course_ids);
+        $profileImageUrl = 'https://source.unsplash.com/random/500x500?sig=' . $randomNumber;
 
         return [
             'name' => fake()->name(),
-            'surname' => fake()->name(),
-            'username' => fake()->unique()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => (static::$password ??= Hash::make('password')),
             'remember_token' => Str::random(10),
+            'profile_image' => $profileImageUrl,
             'role' => $course_id ? 'user' : 'admin',
-            'profile_img' => $randomImage,
-            'course_id' => $course_ids,
+            'genre' => fake()->randomElement(['famale', 'male']),
+            'telephone' => fake()->phoneNumber(),
+            'course' => $course_id,
         ];
     }
 
@@ -53,26 +51,10 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
-    }
-
-    public function admin()
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'role' => 'admin',
-            ];
-        });
-    }
-
-    public function user()
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'role' => 'user',
-            ];
-        });
+        return $this->state(
+            fn(array $attributes) => [
+                'email_verified_at' => null,
+            ],
+        );
     }
 }
