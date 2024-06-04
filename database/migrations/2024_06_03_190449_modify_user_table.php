@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('profile_image')->nullable();
-            $table->string('role')->nullable();
-            $table->string('genre')->nullable();
+            $table->string('role')->default('user');
+            $table->string('gender')->nullable();
             $table->string('telephone', 20)->nullable();
             $table->tinyInteger('course')->nullable();
         });

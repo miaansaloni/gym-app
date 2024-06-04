@@ -6,55 +6,50 @@ use App\Models\User;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function userDashboard()
-    {
-        if (Auth::user()->role !== 'user') {
-            abort(401);
-        }
-
-        $user_id = Auth::user()->id;
-        // $user_id = 1;
-
-        $inscription_courses = User::with('courses')->find($user_id);
-
-        return $inscription_courses;
+public function userDashboard()
+{
+    if (Auth::user()->role !== 'user') {
+        abort(401);
     }
 
-    public function bookCourse(Request $request, $courseId)
-    {
-        if (Auth::user()->role !== 'user') {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-        $user = Auth::user();
-        $course = Course::find($courseId);
+    $user_id = Auth::user()->id;
 
-        if (!$course) {
-            return response()->json(['error' => 'Course not found'], 404);
-        }
-        // Aggiunge la prenotazione
-        $user->courses()->attach($courseId, ['status' => 'pending']);
+    $user = User::with(['courses' => function($query) {
+        $query->withPivot('status'); 
+    }, 'courses.activity', 'courses.slot'])->find($user_id);
 
-        return response()->json(['success' => 'Course booked successfully.'], 200);
-    }
+    return response()->json($user);
+}
 
-    public function cancelCourse($courseId)
-    {
-        if (Auth::user()->role !== 'user') {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
 
-        $user = Auth::user();
+    public function bookCourse(Request $request)
+{
+    $validatedData = $request->validate([
+        'course_id' => 'required|exists:courses,id',
+        'user_id' => 'required|exists:users,id',
+    ]);
 
-        // Verifica se l'utente è iscritto al corso
-        $existingBooking = $user->courses()->where('course_id', $courseId)->first();
+    DB::table('course_user')->updateOrInsert(
+        ['course_id' => $validatedData['course_id'], 'user_id' => $validatedData['user_id']],
+        ['status' => 'pending']
+    );
 
-        // Annulla la prenotazione
-        $user->courses()->detach($courseId);
+    return response()->json(['message' => 'Course booked successfully'], 200);
+}
 
-        return response()->json(['success' => 'Course canceled successfully.'], 200);
-    }
+
+public function deleteBooking($courseId)
+{
+    $user = Auth::user();
+
+    $user->courses()->detach($courseId);
+
+    return response()->json(['message' => 'Booking deleted successfully']);
+}
+
 }

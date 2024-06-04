@@ -40,7 +40,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'profile_image' => $profileImageUrl,
             'role' => $course_id ? 'user' : 'admin',
-            'genre' => fake()->randomElement(['famale', 'male']),
+            'gender' => fake()->randomElement(['female', 'male', 'not-specified']),
             'telephone' => fake()->phoneNumber(),
             'course' => $course_id,
         ];

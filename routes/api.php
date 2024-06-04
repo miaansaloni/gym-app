@@ -19,10 +19,11 @@ Route::name('api.v1.')
     // User routes
     Route::get('/user-dashboard', [UserController::class, 'userDashboard']);
     Route::post('/book-course/{courseId}', [UserController::class, 'bookCourse']);
-    Route::post('/cancel-course/{courseId}', [UserController::class, 'cancelCourse']);
+    Route::delete('/delete-booking/{courseId}', [UserController::class, 'deleteBooking']);
 
     // Admin routes
     Route::get('/admin-dashboard', [AdminController::class, 'adminDashboard']);
+    Route::patch('/update-booking-status/{courseId}/{userId}', [AdminController::class, 'updateBookingStatus']);
     Route::post('/admin-accept/{userId}/{courseId}', [AdminController::class, 'adminAccept']);
     Route::post('/admin-reject/{userId}/{courseId}', [AdminController::class, 'adminReject']);
 

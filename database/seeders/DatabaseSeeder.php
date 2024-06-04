@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@example.com',
             'profile_image' => $profileImageUrl,
             'role' => 'user',
-            'genre' => 'male',
+            'gender' => 'male',
             'telephone' => '123 456789',
             'course' => null,
         ]);
@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@example.com',
             'profile_image' => $profileImageUrl,
             'role' => 'admin',
-            'genre' => 'famale',
+            'gender' => 'female',
             'telephone' => '123 456789',
             'course' => null,
         ]);
